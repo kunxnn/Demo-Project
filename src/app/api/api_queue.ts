@@ -279,30 +279,48 @@ export const handleupdatequeue = async (e: React.FormEvent<HTMLFormElement>, que
 };
 
 
-export const toggleQueueDisplay = async (queue_id: number, status_show_display: boolean) =>{
-  try {
-    const res = await fetch(`${API_BASE_URL}/queue/toggle-display/${queue_id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ status_show_display }),
-    });
+export const toggleQueueDisplay = async (queue_id: number, status_show_display: boolean) => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/queue/toggle-display/${queue_id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ status_show_display }),
+        });
 
-    if (!res.ok) {
-      throw new Error('Failed to update display status');
+        if (!res.ok) {
+            throw new Error('Failed to update display status');
+        }
+
+        const data = await res.json();
+        return data; // { success: true/false, message: string }
+    } catch (error) {
+        console.error(error);
     }
-
-    const data = await res.json();
-    return data; // { success: true/false, message: string }
-  } catch (error) {
-     console.error(error);
-  }
 }
 
 export const fetchhistoryGetdataqueue = async () => {
     try {
         const res = await fetch(`${API_BASE_URL}/queue/findallhistoryqueue`, {
+            method: "GET",
+            credentials: "include",
+        });
+
+        if (!res.ok) {
+            throw new Error("Failed to fetchhistoryGetdataqueue");
+        }
+
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        throw new Error("Failed to fetchhistoryGetdataqueue");
+    }
+};
+
+export const fetchhistorywithqueue = async (queue_id: number, history_id: number) => {
+    try {
+        const res = await fetch(`${API_BASE_URL}/historytreatment/view/${history_id}`, {
             method: "GET",
             credentials: "include",
         });

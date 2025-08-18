@@ -25,14 +25,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={baiJamjuree.className}>
-      <body>
-        <SidebarProvider>
-          <AppSidebar />
-          {children}
-          <Toaster />
-        </SidebarProvider>
-      </body>
-    </html>
+    <SidebarProvider>
+      <AppSidebar />
+      {children}
+      <Toaster />
+    </SidebarProvider>
   );
 }

@@ -87,7 +87,13 @@ export default function HomePage() {
 
     return (
         <div className="flex flex-1 flex-col">
-            <PageHeader title="หน้าหลัก" breadcrumbs={[{ label: "หน้าหลัก" }]} />
+            <PageHeader
+                title=""
+                breadcrumbs={[
+                    { label: "หน้าหลัก", href: "/patient" },
+                    { label: "จัดการข้อมูลพยาบาล" }
+                ]}
+            />
             <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
                 <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
                     {stats.map((stat, index) => (

@@ -111,7 +111,13 @@ export default function reports() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <PageHeader title="หน้าหลัก" breadcrumbs={[{ label: "หน้าหลัก" }]} />
+      <PageHeader
+        title=""
+        breadcrumbs={[
+          { label: "หน้าหลัก", href: "/patient" },
+          { label: "ประวัติการเข้าใช้งาน" }
+        ]}
+      />
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
 
         <Card className="col-span-4">

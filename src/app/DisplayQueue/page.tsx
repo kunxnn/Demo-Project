@@ -14,8 +14,9 @@ import {
     Avatar,
     Stack,
     Divider,
+    CardHeader
 } from "@mui/material"
-import { AccessTime, Person, MonitorHeart, Bloodtype, FavoriteOutlined, MedicalServices } from "@mui/icons-material"
+import { AccessTime, MedicalServices, Person, MonitorHeart } from "@mui/icons-material";
 
 interface Patient {
     patient_id: number;
@@ -68,21 +69,30 @@ export default function QueueDisplay() {
 
                 const result = await res.json();
                 setDataQueueLog(result);
-                
+
             } catch (err) {
                 console.error("Error fetching queue data:", err);
             }
         };
 
         GetQueue();
-        const intervalId = setInterval(GetQueue, 1000);
+        const intervalId = setInterval(GetQueue, 10000);
 
         return () => clearInterval(intervalId);
     }, []);
 
+    // ฟังก์ชันแปลงสถานะ
+    const getStatusLabel = (status: string) => {
+        switch (status) {
+            case 'waiting': return 'รอดำเนินการ';
+            case 'in_progress': return 'กำลังดำเนินการ';
+            case 'done': return 'เสร็จสิ้น';
+            default: return status;
+        }
+    };
 
     return (
-        <Container maxWidth="lg">
+        <Container maxWidth="lg" disableGutters>
             <Paper
                 elevation={4}
                 sx={{
@@ -134,82 +144,109 @@ export default function QueueDisplay() {
                     </Typography>
                 </Stack>
             </Paper>
-            <Grid container spacing={2}>
-                <Grid container columnSpacing={3} rowSpacing={1}>
-                    <Grid size={{ xs: 12, sm: 6, lg: 3 }}>
-                        {/* Service Card */}
-                        <Box sx={{ width: { lg: '300px' } }}>
-                            <Box
+
+            <Grid container spacing={2} sx={{ mt: 2, p: 2 }}>
+                {DataQueue.length === 0 ? (
+                    <Typography variant="body1" sx={{ m: 2 }}>
+                        กำลังโหลดข้อมูลคิว...
+                    </Typography>
+                ) : (
+                    DataQueue.map((item) => (
+                        <Grid key={item.queue_id}>
+                            <Card
                                 sx={{
-                                    display: "flex",
-                                    justifyContent: {
-                                        xs: "center",
-                                        sm: "center",
-                                        lg: "flex-start",
+                                    p: 3, 
+                                    borderRadius: 3,
+                                    boxShadow: 4,
+                                    transition: "transform 0.2s, box-shadow 0.2s",
+                                    "&:hover": {
+                                        transform: "translateY(-5px)",
+                                        boxShadow: 8
                                     },
+                                    display: "flex",
+                                    flexDirection: "column",
+                                    height: 280, 
                                 }}
                             >
-                                {/* Service Icon*/}
+                                {/* Bed Number */}
+                                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                                    <MedicalServices color="primary" fontSize="large" />
+                                    <Typography variant="h5" fontWeight="bold" color="primary">
+                                        เตียงที่ {item.bed_number}
+                                    </Typography>
+                                </Stack>
+
+                                {/* Patient Info */}
+                                <Stack direction="row" spacing={1} alignItems="center" sx={{ mb: 1 }}>
+                                    <Person color="primary" fontSize="large" />
+                                    <Typography variant="h6" fontWeight="medium" noWrap>
+                                        {item.patient.patient_title} {item.patient.patient_firstname} {item.patient.patient_lastname}
+                                    </Typography>
+                                </Stack>
+
+                                {/* Status Display */}
                                 <Box
                                     sx={{
-                                        background: "linear-gradient(to right, #E2D8CB, #E0C299)",
-                                        width: "72px",
-                                        height: "72px",
-                                        p: 1,
+                                        border: 1,
+                                        borderColor: "divider",
                                         borderRadius: 2,
-                                        marginBottom: { xs: 1, sm: 2 },
-                                        display: "flex",
-                                        alignItems: "center",
-                                        justifyContent: "center",
-                                        "& img": {
-                                            objectFit: "contain",
-                                        },
+                                        p: 2,
+                                        mb: 2,
+                                        bgcolor: "white",
                                     }}
                                 >
+                                    <Stack direction="row" spacing={1} alignItems="center">
+                                        <MonitorHeart color="error" fontSize="medium" />
+                                        <Typography variant="h6" fontWeight="medium">
+                                            {item.status_show_display ? getStatusLabel(item.status) : "ไม่แสดง"}
+                                        </Typography>
+                                        <Typography variant="body1" color="text.secondary">
+                                            {item.stage.stage_name}
+                                        </Typography>
+                                    </Stack>
                                 </Box>
-                            </Box>
 
-                            {/* Service content*/}
-                            <Box
-                                sx={{
-                                    textAlign: { xs: "center", sm: "center", lg: "left" },
-                                }}
-                            >
-                                <Typography
-                                    variant="subtitle1"
+                                {/* Updated At */}
+                                <Stack
+                                    direction="row"
+                                    spacing={1}
+                                    alignItems="center"
                                     sx={{
-                                        fontWeight: 700,
-                                        fontSize: { xs: "14px", sm: "14px", lg: "16px" },
-                                        lineHeight: { xs: "22px", sm: "22px", lg: "24px" },
-                                        color: "#040404",
-                                        mb: 1,
+                                        mt: "auto",
+                                        bgcolor: "grey.100",
+                                        p: 1,
+                                        borderRadius: 1
                                     }}
                                 >
-
-                                </Typography>
-                                <Typography
-                                    variant="body2"
-                                    sx={{
-                                        fontWeight: 400,
-                                        fontSize: { xs: "12px", sm: "14px", lg: "16px" },
-                                        lineHeight: { xs: "20px", sm: "22px", lg: "24px" },
-                                        color: "#040404",
-                                        px: { xs: 2, sm: 3, lg: 0 },
-                                    }}
-                                >
-
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Grid>
-                </Grid >
+                                    <AccessTime fontSize="small" color="action" />
+                                    <Typography
+                                        variant="body2" // ใหญ่ขึ้นจาก caption
+                                        color="text.secondary"
+                                        sx={{ fontWeight: 500 }}
+                                    >
+                                        อัปเดตล่าสุด:{" "}
+                                        {new Date(item.updated_at).toLocaleString("th-TH", {
+                                            year: "numeric",
+                                            month: "2-digit",
+                                            day: "2-digit",
+                                            hour: "2-digit",
+                                            minute: "2-digit",
+                                            second: "2-digit",
+                                        })}
+                                    </Typography>
+                                </Stack>
+                            </Card>
+                        </Grid>
+                    ))
+                )}
             </Grid>
+
             <Typography
                 variant="body2"
                 color="text.secondary"
                 sx={{ mt: 3, textAlign: "center" }}
             >
-                ข้อมูลจะอัพเดทอัตโนมัติทุก 30 วินาที | สอบถามเพิ่มเติม โทร. 02-123-4567
+                ข้อมูลจะอัพเดทอัตโนมัติทุก 10 วินาที | สอบถามเพิ่มเติม โทร. 083-603-8713
             </Typography>
         </Container>
     )

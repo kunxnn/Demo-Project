@@ -13,7 +13,7 @@ import DialogAddqueue from "../queue/DialogAddqueue"
 import DialogEditqueue from "../queue/DialogEditqueue"
 import DialogAddhistorytreatment from "../queue/DialogAddHistorytrentment_queue"
 import EditDialogHistorytreatment from "../queue/EditDialogHistorytreatment"
-
+import DialogViewtreatment from "../queue/DialogViewtreatment"
 // API
 import { fetchGetdataqueue, handleDeletequeue, fetchGetdatatreatmentstage, updateQueueStatus, updateQueueStage, toggleQueueDisplay } from "../../api/api_queue"
 import { handleDelete } from "../../api/api_historytreatment";
@@ -62,6 +62,9 @@ export default function QueueSettingPatient() {
     };
 
     const [open, setOpen] = useState(false);
+    const [openViewtreatment, setOpenViewtreatment] = useState(false);
+    const [QueueIDview, setQueueIDview] = useState<number | null>(null);
+    const [SelectedhistorytreatmentIDview, setSelectedhistorytreatmentIDview] = useState<number | null>(null);
     const [queue, setQueue] = useState<Queue[]>([]);
     const [selectedqueue_id, setSelectedqueue_id] = useState<number | null>(null);
     const [addHistoryQueueId, setAddHistoryQueueId] = useState<number | null>(null);
@@ -234,13 +237,6 @@ export default function QueueSettingPatient() {
                                         />
                                     </Tooltip>
 
-                                    <Tooltip title="ดูรายละเอียดการรักษา">
-                                        <IconButton color="primary" onClick={() => router.push(`Queue/Detail_Queue`)}>
-                                            <Folder />
-
-                                        </IconButton>
-                                    </Tooltip>
-
                                     <Tooltip title={q.hasHistory ? "แก้ไขข้อมูลการรักษา" : "เพิ่มข้อมูลการรักษา"}>
                                         <IconButton
                                             color="primary"
@@ -258,17 +254,31 @@ export default function QueueSettingPatient() {
                                         </IconButton>
                                     </Tooltip>
 
+
+
                                     {q.hasHistory && (
-                                        <Tooltip title="ลบข้อมูลการรักษา">
-                                            <IconButton
-                                                color="error"
-                                                onClick={async () => {
-                                                    await handleDelete(q.history_treatment.history_id);
-                                                    loadqueue()
+                                        <>
+                                            <Tooltip title="ดูรายละเอียดการรักษา">
+                                                <IconButton color="primary" onClick={() => {
+                                                    setQueueIDview(q.queue_id);
+                                                    setSelectedhistorytreatmentIDview(q.history_treatment.history_id);
                                                 }}>
-                                                <Delete />
-                                            </IconButton>
-                                        </Tooltip>
+                                                    <Folder />
+                                                </IconButton>
+                                            </Tooltip>
+
+                                            <Tooltip title="ลบข้อมูลการรักษา">
+                                                <IconButton
+                                                    color="error"
+                                                    onClick={async () => {
+                                                        await handleDelete(q.history_treatment.history_id);
+                                                        loadqueue()
+                                                    }}>
+                                                    <Delete />
+                                                </IconButton>
+                                            </Tooltip>
+                                        </>
+
                                     )}
 
                                     <Tooltip title="แก้ไขคิว">
@@ -333,7 +343,20 @@ export default function QueueSettingPatient() {
                     history_id={SelectedhistorytreatmentID}
                 />
             )}
-        </Box>
+
+            {QueueIDview && SelectedhistorytreatmentIDview !== null && (
+                <DialogViewtreatment
+                    open={true}
+                    onClose={() => {
+                        setQueueIDview(null);
+                        setSelectedhistorytreatmentIDview(null);
+                    }}
+                    queue_id={QueueIDview}
+                    history_id={SelectedhistorytreatmentIDview}
+                />
+            )}
+
+        </Box >
 
     );
 }

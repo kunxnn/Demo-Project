@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Bai_Jamjuree } from "next/font/google"
 import "../globals.css"
-import { SidebarProvider } from "@/components/ui/sidebar"
-import { AppSidebar } from "../components/app-sidebar"
+
 
 //ui alert
 import { Toaster } from 'react-hot-toast';
@@ -25,10 +24,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-        <SidebarProvider>
-          <AppSidebar />
-          {children}
-          <Toaster />
-        </SidebarProvider>
+    <>
+      {children}
+    </>
   );
 }

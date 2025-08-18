@@ -72,9 +72,7 @@ export default function QueueSettingPatient() {
 
     useEffect(() => {
         loadqueue();
-
     }, []);
-
 
     return (
         <Box>

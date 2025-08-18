@@ -29,7 +29,13 @@ export default function Queue() {
 
   return (
     <div className="flex flex-1 flex-col">
-      <PageHeader title="หน้าหลัก" breadcrumbs={[{ label: "หน้าหลัก" }]} />
+      <PageHeader
+        title=""
+        breadcrumbs={[
+          { label: "หน้าหลัก", href: "/patient" },
+          { label: "การตั้งค่าตั้งค่าระบบคิวติดตามสถานะผู้ป่วย" }
+        ]}
+      />
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
 
         <Card className="col-span-4 shadow-lg rounded-xl overflow-hidden">

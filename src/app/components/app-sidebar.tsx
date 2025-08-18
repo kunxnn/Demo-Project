@@ -29,7 +29,7 @@ const mainMenuItems = [
 ]
 
 const systemMenuItems = [
-  { title: "การตั้งค่า", icon: SettingsOutlined, url: "/settings" },
+  // { title: "การตั้งค่า", icon: SettingsOutlined, url: "/settings" },
   { title: "ประวัติการเข้าใช้งาน", icon: SettingsOutlined, url: "/log" },
 ]
 
