@@ -172,6 +172,10 @@ export default function DialogViewtreatment({ open, onClose, queue_id, history_i
                         </Typography>
 
                         <Typography variant="body1">
+                            <strong>AN </strong> {history_with_queue?.AN || "-"}
+                        </Typography>
+
+                        <Typography variant="body1">
                             <strong>วันที่เข้ารับการรักษา:</strong>{" "}
                             {history_with_queue?.registerdate
                                 ? new Date(history_with_queue.registerdate).toLocaleDateString("th-TH", {
@@ -202,7 +206,7 @@ export default function DialogViewtreatment({ open, onClose, queue_id, history_i
 
 
 
-                        <Box
+                        {/* <Box
                             sx={{
                                 border: 1,
                                 borderColor: "grey.300",
@@ -231,16 +235,12 @@ export default function DialogViewtreatment({ open, onClose, queue_id, history_i
                                     </Box>
                                 </Stack>
                             </Typography>
-                        </Box>
+                        </Box> */}
 
 
 
                         {/* เส้นเลือดที่ใช้ */}
-                        <Typography variant="body1">
-                            {history_with_queue?.name_vascular || "-"}
-                        </Typography>
-
-                        <Box
+                        {/* <Box
                             sx={{
                                 border: 1,
                                 borderColor: "grey.300",
@@ -253,7 +253,7 @@ export default function DialogViewtreatment({ open, onClose, queue_id, history_i
                             <Typography variant="body1">
                                 <Stack direction="column" spacing={1}>
                                     <Box>
-                                         <strong>เส้นเลือดที่ใช้ </strong> {history_with_queue?.name_vascular || "-"}
+                                        <strong>เส้นเลือดที่ใช้ </strong> {history_with_queue?.name_vascular || "-"}
                                     </Box>
                                     <Box>
                                         <strong>ข้าง </strong> {history_with_queue?.side_name || "-"}
@@ -263,7 +263,7 @@ export default function DialogViewtreatment({ open, onClose, queue_id, history_i
                                     </Box>
                                 </Stack>
                             </Typography>
-                        </Box>
+                        </Box> */}
 
 
                         <Stack direction="row" spacing={1} flexWrap="wrap">

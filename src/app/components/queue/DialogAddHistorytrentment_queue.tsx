@@ -11,9 +11,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
 
 //mui
-import Textarea from '@mui/joy/Textarea';
 import { Box, TextField } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -25,7 +25,7 @@ import FormLabel from '@mui/material/FormLabel';
 import { AlertTriangle, User } from "lucide-react"
 
 //api fetch
-import { fetchWard, fetchrespiration, fetchprocedure, fetchvascular, handleAddhistorytreatment } from "../../api/api_historytreatment"
+import { fetchWard, fetchrespiration, fetchprocedure, fetchvascular, handleAddhistorytreatment_queue } from "../../api/api_historytreatment"
 
 //alert toast
 import toast from 'react-hot-toast';
@@ -208,7 +208,7 @@ export default function DialogAddHistorytreatment({ open, onClose, onSuccess, qu
         }
 
         e.preventDefault();
-        const result = await handleAddhistorytreatment(e, patient_id, queue_id);
+        const result = await handleAddhistorytreatment_queue(e, patient_id, queue_id);
         // console.log(result)
         if (result?.success) {
             toast.success(result.message, {
@@ -331,13 +331,18 @@ export default function DialogAddHistorytreatment({ open, onClose, onSuccess, qu
 
                                 {/*วินิจฉัย*/}
                                 <Label className="text-sm font-medium">วินิจฉัย</Label>
-                                <Textarea color="neutral"
+                                {/* <Textarea color="neutral"
                                     disabled={false}
                                     minRows={2}
                                     placeholder="วินิจฉัย"
                                     size="sm"
                                     variant="outlined"
                                     name='diangnosis'
+                                /> */}
+
+                                <Textarea
+                                    placeholder='การวินิจฉัยโรค'
+                                    name="diangnosis"
                                 />
 
                                 {/*Respiration*/}

@@ -11,10 +11,9 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
-
+import { Textarea } from "@/components/ui/textarea"
 
 //mui
-import Textarea from '@mui/joy/Textarea';
 import { Box } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -292,7 +291,7 @@ export default function EditDialogHistorytreatment({ open, onClose, onSuccess, q
                                     <Label htmlFor="HN" className="text-sm font-medium">
                                         Bed<span className="text-red-500">*</span>
                                     </Label>
-                                    <Input name="Bed" type="number" placeholder="กรอกหมายเลข Bed" value={Bed} onChange={(e) => setBed(e.target.value)} className="w-full" />
+                                    <Input name="Bed" type="number" placeholder="กรอกหมายเลข Bed" value={Bed} onChange={(e) => setBed(e.target.value)} className="w-full" readOnly/>
 
                                     <Label className="text-sm font-medium">Ward</Label>
                                     <Select value={selectedWard.toString()} onValueChange={(value) => setSelectedWard(value)} name='Ward'>
@@ -351,7 +350,7 @@ export default function EditDialogHistorytreatment({ open, onClose, onSuccess, q
 
                                 {/*วินิจฉัย*/}
                                 <Label className="text-sm font-medium">วินิจฉัย</Label>
-                                <Textarea
+                                {/* <Textarea
                                     color="neutral"
                                     disabled={false}
                                     minRows={2}
@@ -361,7 +360,15 @@ export default function EditDialogHistorytreatment({ open, onClose, onSuccess, q
                                     name="diangnosis"
                                     value={diagnosis}
                                     onChange={(e) => setDiagnosis(e.target.value)}
+                                /> */}
+
+                                <Textarea
+                                    placeholder='การวินิจฉัยโรค'
+                                    name="diangnosis"
+                                    value={diagnosis}
+                                    onChange={(e) => setDiagnosis(e.target.value)}
                                 />
+
 
                                 {/*Respiration*/}
                                 <Label className="text-sm font-medium">Respiration</Label>
@@ -496,8 +503,8 @@ export default function EditDialogHistorytreatment({ open, onClose, onSuccess, q
                                     onChange={(e) => setIpdopd(e.target.value)}
 
                                 >
-                                    <FormControlLabel value="IPD" control={<Radio />} label="IPD" />
-                                    <FormControlLabel value="OPD" control={<Radio />} label="OPD" />
+                                    <FormControlLabel value="IPD" control={<Radio />} label="IPD" disabled />
+                                    <FormControlLabel value="OPD" control={<Radio />} label="OPD" disabled />
                                 </RadioGroup>
 
                                 <Label className="text-sm font-medium">วันที่ลงทะเบียน</Label>

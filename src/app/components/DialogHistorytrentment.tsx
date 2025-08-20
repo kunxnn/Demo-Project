@@ -11,9 +11,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
 
 //mui
-import Textarea from '@mui/joy/Textarea';
+// import Textarea from '@mui/joy/Textarea';
 import { Box ,TextField} from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -207,7 +208,6 @@ export default function DialogAddHistorytreatment({ open, onClose, onSuccess }: 
 
         e.preventDefault();
         const result = await handleAddhistorytreatment(e, patient_id);
-        // console.log(result)
         if (result?.success) {
             toast.success(result.message, {
                 duration: 2000,
@@ -328,15 +328,12 @@ export default function DialogAddHistorytreatment({ open, onClose, onSuccess }: 
 
                                 {/*วินิจฉัย*/}
                                 <Label className="text-sm font-medium">วินิจฉัย</Label>
-                                <Textarea color="neutral"
-                                    disabled={false}
-                                    minRows={2}
-                                    placeholder="วินิจฉัย"
-                                    size="sm"
-                                    variant="outlined"
-                                    name='diangnosis'
+                                <Textarea 
+                                placeholder='การวินิจฉัยโรค'
+                                name="diangnosis"
                                 />
 
+                                
                                 {/*Respiration*/}
                                 <Label className="text-sm font-medium">Respiration</Label>
                                 <Select value={selectedrespiration.toString()} onValueChange={(value) => setSelectedrespiration(value)} name='respiration'>

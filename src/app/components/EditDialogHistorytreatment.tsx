@@ -11,10 +11,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Card, CardContent } from "@/components/ui/card"
+import { Textarea } from "@/components/ui/textarea"
 
 
 //mui
-import Textarea from '@mui/joy/Textarea';
 import { Box } from '@mui/material';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
@@ -348,13 +348,20 @@ export default function EditDialogHistorytreatment({ open, onClose, onSuccess, h
 
                                 {/*วินิจฉัย*/}
                                 <Label className="text-sm font-medium">วินิจฉัย</Label>
-                                <Textarea
+                                {/* <Textarea
                                     color="neutral"
                                     disabled={false}
                                     minRows={2}
                                     placeholder="วินิจฉัย"
                                     size="sm"
                                     variant="outlined"
+                                    name="diangnosis"
+                                    value={diagnosis}
+                                    onChange={(e) => setDiagnosis(e.target.value)}
+                                /> */}
+
+                                <Textarea
+                                    placeholder='การวินิจฉัยโรค'
                                     name="diangnosis"
                                     value={diagnosis}
                                     onChange={(e) => setDiagnosis(e.target.value)}
@@ -503,7 +510,7 @@ export default function EditDialogHistorytreatment({ open, onClose, onSuccess, h
                         </CardContent>
                     </Card>
 
-                    <DialogFooter className="gap-2">           
+                    <DialogFooter className="gap-2">
                         <Button type="submit" variant="outline">
                             บันทึกข้อมูล
                         </Button>

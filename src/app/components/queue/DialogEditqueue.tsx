@@ -7,7 +7,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import toast from 'react-hot-toast';
 
 // API
-import { fetchGetdataPetient } from "../../api/api_patient";
+import { fetchgetAvailablePatients } from "../../api/api_patient";
 import { handleupdatequeue, fetchqueueById, fetchGetdatatreatmentstage } from "../../api/api_queue";
 
 interface Props {
@@ -64,7 +64,7 @@ export default function DialogEditqueue({ open, onClose, onSuccess, queue_id }: 
     useEffect(() => {
         const getPatients = async () => {
             try {
-                const data = await fetchGetdataPetient();
+                const data = await fetchgetAvailablePatients();
                 const formatted = data.map((p: any) => ({
                     patient_id: p.patient_id,
                     fullname: `${p.patient_title} ${p.patient_firstname} ${p.patient_lastname}`,

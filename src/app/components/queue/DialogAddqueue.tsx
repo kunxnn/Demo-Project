@@ -8,7 +8,7 @@ import { handleAddtreatmentstage } from "../../api/api_queue"
 import toast from 'react-hot-toast';
 
 //api
-import { fetchGetdataPetient } from "../../api/api_patient"
+import { fetchgetAvailablePatients } from "../../api/api_patient"
 import { handleAddQueue, fetchGetdatatreatmentstage } from "../../api/api_queue"
 
 interface Props {
@@ -44,7 +44,7 @@ export default function DialogAddqueue({ open, onClose, onSuccess }: Props) {
     useEffect(() => {
         const getPatients = async () => {
             try {
-                const data = await fetchGetdataPetient();
+                const data = await fetchgetAvailablePatients();
                 const formatted = data.map((p: any) => ({
                     patient_id: p.patient_id,
                     fullname: `${p.patient_title} ${p.patient_firstname} ${p.patient_lastname}`,

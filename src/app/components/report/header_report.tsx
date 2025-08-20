@@ -31,7 +31,7 @@ const ReportExportBox = ({ month, year, setMonth, setYear }: ReportExportBoxProp
     ];
 
     const handleExport = async () => {
- 
+
         if ((month === 'เลือกเดือน' || month === '') && (year === 'เลือกปี' || year === '')) {
             alert('กรุณาเลือกเดือนและปี');
             return;
@@ -78,24 +78,55 @@ const ReportExportBox = ({ month, year, setMonth, setYear }: ReportExportBoxProp
 
 
     return (
-        <Box sx={{ textAlign: 'center' }}>
-            <Typography variant="h4" gutterBottom>
+        <Box
+            sx={{
+                textAlign: 'center',
+            }}
+        >
+            <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
                 รายงานข้อมูลประจำเดือน
             </Typography>
-            <Typography variant="subtitle1" gutterBottom>
-                เลือกเดือนและปีส่งออกข้อมูลในรูปแบบ Excel
+
+            <Typography
+                variant="subtitle1"
+                gutterBottom
+                sx={{ color: 'text.secondary', mb: 2 }}
+            >
+                เลือกเดือนและปีเพื่อส่งออกข้อมูลในรูปแบบ Excel
             </Typography>
 
-            <Stack direction="row" spacing={2} sx={{ display: 'flex', justifyContent: 'center' }}>
-                <MonthSelect value={month} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setMonth(e.target.value)} />
-                <YearSelect value={year} onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setYear(e.target.value)} />
-                <Button variant="contained" onClick={handleExport}>Export Excel</Button>
+            <Stack
+                direction={{ xs: 'column', sm: 'row' }}
+                spacing={1}
+                sx={{ justifyContent: 'center', alignItems: 'center', mb: 1 }}
+            >
+                <MonthSelect
+                    value={month}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setMonth(e.target.value)}
+                />
+                <YearSelect
+                    value={year}
+                    onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setYear(e.target.value)}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    size="large"
+                    onClick={handleExport}
+                    sx={{ minWidth: 140 }}
+                >
+                    Export Excel
+                </Button>
             </Stack>
 
-            <Typography variant="subtitle1" gutterBottom sx={{ mt: 2 }}>
-                เดือนที่เลือก: {selectedMonthLabel} | ปีที่เลือก: {year}
+            <Typography
+                variant="subtitle1"
+                sx={{ mt: 2, color: 'text.secondary', fontStyle: 'italic' }}
+            >
+                เดือนที่เลือก: <strong>{selectedMonthLabel}</strong>  ปีที่เลือก: <strong>{year}</strong>
             </Typography>
         </Box>
+
     );
 };
 

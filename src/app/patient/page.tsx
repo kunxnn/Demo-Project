@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 //mui
-import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, Chip, Tooltip, Typography } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, IconButton, Chip, Tooltip, Typography, Box, TableContainer , Stack } from '@mui/material';
 
 //ui shadcn components
 import { PageHeader } from "../components/page-header"
@@ -28,29 +28,34 @@ export default function HomePage() {
   const stats = [
     {
       title: "ผู้ป่วยทั้งหมด",
-      value: "1,234",
+      value: "1,234", // จำนวนผู้ป่วยทั้งหมดในระบบ
       description: "เพิ่มขึ้น 12% จากเดือนที่แล้ว",
       icon: Users,
+      color: "#42a5f5",
     },
     {
-      title: "การนัดหมายวันนี้",
-      value: "23",
-      description: "มีการนัดหมาย 5 รายการใหม่",
+      title: "ผู้ป่วยที่นัดหมายวันนี้",
+      value: "23", // จำนวนผู้ป่วยที่มีคิววันนี้
+      description: "รวมผู้ป่วยใหม่และเดิม",
       icon: Calendar,
+      color: "#66bb6a",
     },
     {
-      title: "เวชระเบียนใหม่",
-      value: "89",
-      description: "สร้างในสัปดาห์นี้",
+      title: "ผู้ป่วยใหม่เดือนนี้",
+      value: "89", // ผู้ป่วยที่เพิ่มใหม่ในเดือนนี้
+      description: "ลงทะเบียนในระบบเดือนนี้",
       icon: FileText,
+      color: "#ffa726",
     },
     {
-      title: "สถานะระบบ",
-      value: "ปกติ",
-      description: "ระบบทำงานได้ดี 99.9%",
+      title: "ผู้ป่วย IPD / OPD วันนี้",
+      value: "IPD: 12 | OPD: 45", // แยกประเภทผู้ป่วยในวันนี้
+      description: "จำนวนผู้ป่วยแยกตาม IPD และ OPD",
       icon: Activity,
+      color: "#ef5350",
     },
-  ]
+  ];
+
 
   interface patients {
     patient_id: number;
@@ -95,7 +100,7 @@ export default function HomePage() {
 
   return (
     <div className="flex flex-1 flex-col">
-      
+
       <PageHeader
         title=""
         breadcrumbs={[
@@ -107,18 +112,36 @@ export default function HomePage() {
       <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat, index) => (
-            <Card key={index}>
-              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <Card key={index} className="hover:shadow-lg transition-shadow duration-300">
+              <CardHeader className="flex justify-between items-center pb-2">
                 <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
-                <stat.icon className="h-4 w-4 text-muted-foreground" />
+                <Box
+                  sx={{
+                    bgcolor: stat.color,
+                    borderRadius: '50%',
+                    width: 32,
+                    height: 32,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    color: 'white'
+                  }}
+                >
+                  <stat.icon size={16} />
+                </Box>
               </CardHeader>
               <CardContent>
-                <div className="text-2xl font-bold">{stat.value}</div>
-                <p className="text-xs text-muted-foreground">{stat.description}</p>
+                <Typography variant="h5" fontWeight="bold">
+                  {stat.value}
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  {stat.description}
+                </Typography>
               </CardContent>
             </Card>
           ))}
         </div>
+
 
         <Card className="col-span-4">
 
@@ -131,76 +154,73 @@ export default function HomePage() {
           </CardHeader>
           <CardContent>
 
-            <Table size="small">
-              <TableHead>
-                <TableRow>
-                  <TableCell>#</TableCell>
-                  <TableCell>HN</TableCell>
-                  <TableCell>ชื่อ-นาสกุล</TableCell>
-                  <TableCell>อายุ</TableCell>
-                  <TableCell>ที่อยู่</TableCell>
-                  <TableCell>สิทธิ์</TableCell>
-                  <TableCell>ประเภท</TableCell>
-                  <TableCell>การจัดการ</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {patients.map((p, index) => (
-                  <TableRow key={p.patient_id}>
-                    <TableCell>{index + 1}</TableCell>
-                    <TableCell>{p.patient_HN}</TableCell>
-                    {p.patient_health === "Alert pre Arrest" ? (
-                      <TableCell >
-                        <Typography sx={{ color: 'red' }}>
-                          {p.patient_title + " " + p.patient_firstname + " " + p.patient_lastname}
-                          <Tooltip title={p.patient_health} arrow>
-                            < WarningOutlined />
-                          </Tooltip>
-                        </Typography>
-
-                      </TableCell>
-
-                    ) : (
-                      <TableCell>
-                        {p.patient_title} {p.patient_firstname} {p.patient_lastname}
-                      </TableCell>
-                    )}
-                    <TableCell>{p.patient_age}</TableCell>
-                    <TableCell>{p.patient_address} ต.{p.subdistrict_name} อ.{p.district_name} จ.{p.province_name} {p.zipcode} </TableCell>
-                    <TableCell>{p.name_sis}</TableCell>
-                    <TableCell>{p.patient_type}</TableCell>
-                    <TableCell>
-                      <IconButton color='primary'>
-                        <Folder />
-                      </IconButton>
-
-                      <IconButton
-                        color='primary'
-                        onClick={() => {
-                          localStorage.setItem('patient_id', p.patient_id.toString());
-                          router.push('/patient/historytreatment');
-                        }}
-                      >
-                        <MedicalServices />
-                      </IconButton>
-
-                      <IconButton
-                        color="warning"
-                        onClick={() => {
-                          setSelectedPatientId(p.patient_id);
-                        }}
-                      >
-                        <Edit />
-                      </IconButton>
-                      <IconButton color="error" onClick={() => handleDelete(p.patient_id)}>
-                        <Delete />
-                      </IconButton>
-                    </TableCell>
+            <TableContainer sx={{ overflowX: 'auto' }}>
+              <Table size="small">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>#</TableCell>
+                    <TableCell>HN</TableCell>
+                    <TableCell>ชื่อ-นาสกุล</TableCell>
+                    <TableCell>อายุ</TableCell>
+                    <TableCell>ที่อยู่</TableCell>
+                    <TableCell>สิทธิ์</TableCell>
+                    <TableCell>ประเภท</TableCell>
+                    <TableCell>การจัดการ</TableCell>
                   </TableRow>
-                ))}
-
-              </TableBody>
-            </Table>
+                </TableHead>
+                <TableBody>
+                  {patients.map((p, index) => (
+                    <TableRow key={p.patient_id}>
+                      <TableCell>{index + 1}</TableCell>
+                      <TableCell>{p.patient_HN}</TableCell>
+                      <TableCell>
+                        {p.patient_health === "Alert pre Arrest" ? (
+                          <Typography sx={{ color: 'red', display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            {p.patient_title} {p.patient_firstname} {p.patient_lastname}
+                            <Tooltip title={p.patient_health} arrow>
+                              <WarningOutlined fontSize="small" />
+                            </Tooltip>
+                          </Typography>
+                        ) : (
+                          `${p.patient_title} ${p.patient_firstname} ${p.patient_lastname}`
+                        )}
+                      </TableCell>
+                      <TableCell>{p.patient_age}</TableCell>
+                      <TableCell sx={{ minWidth: 150 }}>
+                        {p.patient_address} ต.{p.subdistrict_name} อ.{p.district_name} จ.{p.province_name} {p.zipcode}
+                      </TableCell>
+                      <TableCell>{p.name_sis}</TableCell>
+                      <TableCell>{p.patient_type}</TableCell>
+                      <TableCell>
+                        <Stack direction="row" spacing={0.5}>
+                          <Tooltip title="แฟ้มข้อมูล">
+                            <IconButton color='primary'><Folder /></IconButton>
+                          </Tooltip>
+                          <Tooltip title="ประวัติการรักษา">
+                            <IconButton
+                              color='primary'
+                              onClick={() => {
+                                localStorage.setItem('patient_id', p.patient_id.toString());
+                                router.push('/patient/historytreatment');
+                              }}
+                            >
+                              <MedicalServices />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="แก้ไขข้อมูลผู้ป่วย">
+                            <IconButton color="warning" onClick={() => setSelectedPatientId(p.patient_id)}><Edit /></IconButton>
+                          </Tooltip>
+                          <Tooltip title="ลบผู้ป่วย">
+                            <IconButton color="error" onClick={() => handleDelete(p.patient_id)}><Delete /></IconButton>
+                          </Tooltip>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+            
           </CardContent>
         </Card>
 

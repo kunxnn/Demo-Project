@@ -154,7 +154,10 @@ export default function QueueSettingPatient() {
                     <DialogAddqueue
                         open={open}
                         onClose={() => setOpen(false)}
-                        onSuccess={() => setOpen(false)}
+                        onSuccess={() => {
+                            loadqueue()
+                            setOpen(false)
+                        }}
                     />
 
                     <Button

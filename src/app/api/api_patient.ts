@@ -101,3 +101,14 @@ export const fetchUserById = async (id: number) => {
     return null;
   }
 };
+
+
+export const fetchgetAvailablePatients = async () => {
+  try {
+    const res = await fetch(`${API_BASE_URL}/patient/not-in-queue`);
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    throw new Error('Failed to fetch users');
+  }
+};
